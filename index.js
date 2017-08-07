@@ -25,7 +25,7 @@ app.use(express.static('public'));
 
 
 // if (!module.parent) app.listen(3000); // conditional prevents a very esoteric EADDRINUSE issue with mocha watch + supertest + npm test.
-models.db.sync({})
+models.db.sync()
 .then(function () {
     return models.Page.sync({})
 })
