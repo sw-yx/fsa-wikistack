@@ -4,14 +4,17 @@ var express = require('express');
 const router = express.Router();
 module.exports = router;
 
+var Users = require('../models/').User
 
 router.get('/', function (req, res, next) {
-  console.log('hello')
-  res.redirect('/')
+  Users.findAll({}).then(function(users){
+    res.render('users', {abc: users})
+  }).catch(next)
 });
 
-router.get('/123', function (req, res, next) {
-  res.redirect('/')
+router.get('/:id', function (req, res, next) {
+  res
+  // res.redirect('/')
 });
 
 

@@ -17,18 +17,30 @@ router.post('/', function(req, res, next) {
     // STUDENT ASSIGNMENT:
   // add definitions for `title` and `content`
 
-  var page = Page.build({
-    title: req.body.title,
-    content: req.body.TextArea
-  });
+  User.findOrCreate({
+    where: {
+      name: req.body.AuthorName,
+      email: req.body.AuthorEmail
+    }
+  })
+  .then(function (values) {
+    var user = values[0];
+    var page = Page.build({
+      title: req.body.title,
+      content: req.body.TextArea
+    });
+    return page.save().then(function(page) {
+      return page.setAuthor(user);
+    })
+  })
+  .then(function(page) {
+    res.redirect(page.route);
+  })
+  .catch(next)
+
   // STUDENT ASSIGNMENT:
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise or it can take a callback.
-  page.save()
-  .then(function (savedPage) {
-    res.redirect(savedPage.route)
-});
-  ;
 });
 
 router.get('/add', function(req, res, next) {
